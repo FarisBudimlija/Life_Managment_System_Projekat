@@ -24,8 +24,18 @@ public class Izbor {
 
         // 2. Akcija za FinanceApp dugme
         dugmeFinansije.addActionListener(e -> {
-            JOptionPane.showMessageDialog(GlavniPanel, "Otvaram FinanceApp...");
-            // Ovdje ćeš kasnije dodati sličan kod kao iznad za GlavniMeni
+            // pravim prozor za glavni meni
+            JFrame frameMeni = new JFrame("Life Management System - Main Menu");
+            GlavniMeni meni = new GlavniMeni();
+
+            frameMeni.setContentPane(meni.getGlavniPanel()); // ubacujem panel iz klase
+            frameMeni.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // gasi sve kad izadjem
+            frameMeni.setSize(800, 500); // velicina ko na slici sto sam poslo
+            frameMeni.setLocationRelativeTo(null);
+            frameMeni.setVisible(true);
+
+            // gasim onaj mali prozor izbora
+            SwingUtilities.getWindowAncestor(GlavniPanel).dispose();
         });
 
         // 3. Akcija za Trackere
