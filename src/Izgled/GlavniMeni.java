@@ -26,9 +26,14 @@ public class GlavniMeni {
             frame.setVisible(true);
         });
 
-        // ostala dugmad zasad samo bacaju poruku
+        // akcija za FinanceTracker
         btnFinance.addActionListener(e -> {
-            JOptionPane.showMessageDialog(glavniPanel, "Ovo jos trebam napravit...");
+            JFrame frame = new JFrame("Finance Tracker");
+            FinanceTracker finance = new FinanceTracker();
+            frame.setContentPane(finance.getGlavniPanel());
+            frame.pack(); // ili setSize(600, 400)
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
         });
 
         btnSleep.addActionListener(e -> {
