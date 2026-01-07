@@ -7,47 +7,52 @@ import org.bson.Document;
 
 public class KorisnikServis {
 
-    // tabela u bazi u kojoj stoje ljudi
     private MongoCollection<Document> korisnici;
 
     public KorisnikServis() {
-        // spaja sa bazom
-        // konekcija uzima bazu i dobijamo korisnike
         this.korisnici = Konekcija.uzmiBazu().getCollection("korisnici");
     }
 
-    // Metoda za reg
+    // Metoda za registraciju
     public boolean registracija(String ime, String lozinka) {
-        // Prvo projeri da li vec postoji taj korisnik u bazi
         Document nadjen = korisnici.find(Filters.eq("username", ime)).first();
-
         if (nadjen != null) {
-            // Ako smo ga ima znaci da je ime zauzeto
             return false;
         }
-
-        // Ako nije zauzet napravi novi dokumnt i upiši podatke
         Document novi = new Document("username", ime)
                 .append("password", lozinka);
-
-        korisnici.insertOne(novi); // Ubacivanje u bazu
+        korisnici.insertOne(novi);
         return true;
     }
 
-    // login metoda
+    // Login metoda
     public boolean login(String ime, String lozinka) {
-        // Tražimo korinika po imenu
         Document korisnik = korisnici.find(Filters.eq("username", ime)).first();
-
         if (korisnik != null) {
-            // Ako postoji provjer da li je lozinka ista
             String passIzBaze = korisnik.getString("password");
             if (passIzBaze.equals(lozinka)) {
-                return true; // Sve OK
+                return true;
             }
         }
-
-
         return false;
+    }
+
+    // Metoda za ažuriranje
+    public boolean azurirajProfil(String novoIme, String novaLozinka) {
+        try {
+            // Pronalazimo korisnika po imenu i mijenjamo mu lozinku
+            Document updatePodaci = new Document("password", novaLozinka);
+
+            korisnici.updateOne(
+                    Filters.eq("username", novoIme),
+                    new Document("$set", updatePodaci)
+            );
+
+            System.out.println("Uspješno ažurirana lozinka za korisnika: " + novoIme);
+            return true;
+        } catch (Exception e) {
+            System.err.println("Greška prilikom ažuriranja: " + e.getMessage());
+            return false;
+        }
     }
 }
