@@ -13,38 +13,42 @@ public class Izbor {
         // 1. Akcija za dugme Profil
         dugmeProfil.addActionListener(e -> {
             JFrame frameProfil = new JFrame("Uređivanje Profila");
-            UrediProfil forma = new UrediProfil(); // Poziva tvoju novu klasu
+            UrediProfil forma = new UrediProfil();
 
             frameProfil.setContentPane(forma.getGlavniPanel());
-            frameProfil.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Zatvara samo taj prozor
+            frameProfil.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             frameProfil.pack();
-            frameProfil.setLocationRelativeTo(null); // Centrira na ekranu
+            frameProfil.setLocationRelativeTo(null);
             frameProfil.setVisible(true);
         });
 
-        // 2. Akcija za FinanceApp dugme
+        // 2. Akcija za dugme Finansije
         dugmeFinansije.addActionListener(e -> {
-            // pravim prozor za glavni meni
+            JFrame financeFrame = new JFrame("Finance Tracker");
+            FinanceTracker tracker = new FinanceTracker();
+
+            financeFrame.setContentPane(tracker.getGlavniPanel());
+            financeFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            financeFrame.pack();
+            financeFrame.setLocationRelativeTo(null);
+            financeFrame.setVisible(true);
+        });
+
+        // 3. Akcija za Trackere (Glavni Meni)
+        dugmeTrackeri.addActionListener(e -> {
             JFrame frameMeni = new JFrame("Life Management System - Main Menu");
             GlavniMeni meni = new GlavniMeni();
 
-            frameMeni.setContentPane(meni.getGlavniPanel()); // ubacujem panel iz klase
-            frameMeni.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // gasi sve kad izadjem
-            frameMeni.setSize(800, 500); // velicina ko na slici sto sam poslo
+            frameMeni.setContentPane(meni.getGlavniPanel());
+            frameMeni.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frameMeni.setSize(800, 500);
             frameMeni.setLocationRelativeTo(null);
             frameMeni.setVisible(true);
-
-            // gasim onaj mali prozor izbora
+            // Zatvaramo trenutni prozor izbora
             SwingUtilities.getWindowAncestor(GlavniPanel).dispose();
-        });
-
-        // 3. Akcija za Trackere
-        dugmeTrackeri.addActionListener(e -> {
-            JOptionPane.showMessageDialog(GlavniPanel, "Trackeri su u fazi izrade.");
         });
     }
 
-    // Ova metoda je ključna da bi Main mogao prikazati prozor
     public JPanel getGlavniPanel() {
         return GlavniPanel;
     }

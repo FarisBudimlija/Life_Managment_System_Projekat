@@ -1,56 +1,71 @@
 package Izgled;
 
-import Servis.FinanceServis;
+import Servis.Transaction;
+import Servis.TransactionManager;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.util.ArrayList;
 
 public class FinanceTracker {
     private JPanel glavniPanel;
     private JTable transactionTable;
-    private JTable tabelaFinansija;
-    private JTextField kafaTextField;
-    private JTextField cifraField1;
-    private JTextField IznosField1;
-    private JButton dodajTrošakButton;
+    private JTextField IznosField1;   // Koristimo ga za opis
+    private JTextField cifraField1;   // Koristimo ga za iznos
+    private JComboBox<String> typeBox1;
+    private JButton dodaj;
 
-
-    private FinanceServis servis = new FinanceServis();
+    private TransactionManager manager;
 
     public FinanceTracker() {
-        // pravim kolone za tabelu
-        DefaultTableModel model = new DefaultTableModel();
-        model.addColumn("Stavka");
-        model.addColumn("Iznos (KM)");
+        manager = new TransactionManager();
 
-        // povezujem ovaj model sa tabelom iz dizajnera
-        tabelaFinansija.setModel(model);
+        // prikaz iz baze
+        osvjeziPrikaz();
 
-        // akcija kad kliknem na dugme "Dodaj Trosak"
-        dodajTrošakButton.addActionListener(e -> {
-            String naziv = kafaTextField.getText(); // uzimam sta sam kupio
-            String pare = cifraField1.getText();    // uzimam kolko kosta
+        dodaj.addActionListener(e -> {
+            try {
+                String tip = (String) typeBox1.getSelectedItem();
 
-            // provjera da nije ostalo prazno
-            if (naziv.isEmpty() || pare.isEmpty()) {
-                JOptionPane.showMessageDialog(glavniPanel, "Moras upisat i sta i kolko!");
-                return;
+                // Iznos polje je IznosField1
+                String tekstIznosa = IznosField1.getText().trim().replace(",", ".");
+                double iznos = Double.parseDouble(tekstIznosa);
+
+                // Artikal je cifraField1
+                String opis = cifraField1.getText().trim();
+
+                if (opis.isEmpty()) {
+                    JOptionPane.showMessageDialog(glavniPanel, "Artikal ne smije biti prazan!");
+                    return;
+                }
+
+                // Slanje u bazu
+                manager.addTransaction(new Transaction(tip, iznos, opis));
+
+                // Osvježavanje tabele i čišćenje polja
+                osvjeziPrikaz();
+                IznosField1.setText("");
+                cifraField1.setText("");
+
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(glavniPanel, "Greška! Unijeli ste '" + IznosField1.getText() + "', a ovdje mora biti broj.");
             }
-
-            // ubacujem u tabelu to sto sam napiso da vidim odmah
-            model.addRow(new Object[]{naziv, pare});
-
-
-            servis.dodajTrosak(naziv, pare);
-
-            // brise tekst iz polja
-            kafaTextField.setText("");
-            cifraField1.setText("");
-
-            System.out.println("Dodano u listu i bazu: " + naziv + " " + pare + " KM");
         });
     }
 
-    // ovo moram imati da bi prozor radio
+    private void osvjeziPrikaz() {
+        // Puni tabelu
+        ArrayList<Transaction> lista = manager.getAllTransactions();
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("Tip");
+        model.addColumn("Iznos");
+        model.addColumn("Opis");
+
+        for (Transaction t : lista) {
+            model.addRow(new Object[]{t.getType(), t.getAmount(), t.getDescription()});
+        }
+        transactionTable.setModel(model);
+    }
+
     public JPanel getGlavniPanel() {
         return glavniPanel;
     }

@@ -35,7 +35,7 @@ public class GlavniMeni {
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
         });
-
+         //akcija za SleepTracker
         btnSleep.addActionListener(e -> {
         //  novi prozor
         JFrame frame = new JFrame("Sleep Tracker");
