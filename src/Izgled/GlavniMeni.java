@@ -51,6 +51,22 @@ public class GlavniMeni {
         //Da se vidi
         frame.setVisible(true);
     });
+        // akcija za MealPlanner
+        btnMeal.addActionListener(e -> {
+            // novi prozor
+            JFrame frame = new JFrame("Meal Planner");
+            MealPlanner planer = new MealPlanner();
+            frame.setContentPane(planer.getGlavniPanel());
+
+            // Da se ne bi ugasio cijeli program
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            // Veličina
+            frame.setSize(650, 450);
+            // Centrira
+            frame.setLocationRelativeTo(null);
+            // Da se vidi
+            frame.setVisible(true);
+        });
 }
     // metoda da main moze povuc panel i pokazat ga
     public JPanel getGlavniPanel() {
