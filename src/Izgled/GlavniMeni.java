@@ -37,10 +37,21 @@ public class GlavniMeni {
         });
 
         btnSleep.addActionListener(e -> {
-            JOptionPane.showMessageDialog(glavniPanel, "Tracker za spavanje...");
-        });
-    }
+        //  novi prozor
+        JFrame frame = new JFrame("Sleep Tracker");
+        SleepTracker sleep = new SleepTracker();
+        frame.setContentPane(sleep.getGlavniPanel());
 
+        // PDa se ne bi ugasio cijeli program
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        // Veličina
+        frame.setSize(650, 450);
+        // Centrira
+        frame.setLocationRelativeTo(null);
+        //Da se vidi
+        frame.setVisible(true);
+    });
+}
     // metoda da main moze povuc panel i pokazat ga
     public JPanel getGlavniPanel() {
         return glavniPanel;

@@ -6,9 +6,11 @@ import javax.swing.table.DefaultTableModel;
 
 public class FinanceTracker {
     private JPanel glavniPanel;
+    private JTable transactionTable;
     private JTable tabelaFinansija;
     private JTextField kafaTextField;
-    private JTextField textField1;
+    private JTextField cifraField1;
+    private JTextField IznosField1;
     private JButton dodajTrošakButton;
 
 
@@ -26,7 +28,7 @@ public class FinanceTracker {
         // akcija kad kliknem na dugme "Dodaj Trosak"
         dodajTrošakButton.addActionListener(e -> {
             String naziv = kafaTextField.getText(); // uzimam sta sam kupio
-            String pare = textField1.getText();    // uzimam kolko kosta
+            String pare = cifraField1.getText();    // uzimam kolko kosta
 
             // provjera da nije ostalo prazno
             if (naziv.isEmpty() || pare.isEmpty()) {
@@ -42,7 +44,7 @@ public class FinanceTracker {
 
             // brise tekst iz polja
             kafaTextField.setText("");
-            textField1.setText("");
+            cifraField1.setText("");
 
             System.out.println("Dodano u listu i bazu: " + naziv + " " + pare + " KM");
         });
